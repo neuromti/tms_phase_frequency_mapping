@@ -2,7 +2,7 @@
 
 This repository contains the processing pipeline used to compute phase-dependent TMS-evoked potentials (TEPs) from raw EEG/TMS recordings, from raw data import through to publication-ready figures.
 
-## ⚠️ Before You Run Anything
+## Before You Run Anything
 
 1. **Set your local paths.** All scripts contain paths pointing to where data is stored on the local server. These paths must be updated to match your own environment before running any script.
 2. **Configure EEGLAB path.** Open `local_settings.config` and update the path to your local EEGLAB installation (and to the `custom_functions` folder, if not already correct).
