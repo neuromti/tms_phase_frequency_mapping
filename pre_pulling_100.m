@@ -34,7 +34,7 @@ pout.path_main = '/mnt/data/data08/RawData/2019_JG_IMONAS_acute/';
 pout.in_fetures = {'HandleClockSynchronization', false};
 
 % -- base output directory
-pout.path_out = '/mnt/data/data09/2026_IMONAS_MSK/data_out/Raw_2021_10_08/';
+pout.path_out = '/mnt/data/data09/FinalizedStudies/2026_IMONAS_MSK/data_out/Raw_2021_10_08/';
 
 %% -- create data out folder
 

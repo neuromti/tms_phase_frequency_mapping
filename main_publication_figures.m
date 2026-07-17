@@ -33,22 +33,21 @@ end
 %% -- define input parameters
 % d:\Studies\2026_IMONAS_MSK\
 % -- define input directory
-pout.path_in = 'd:\Studies\2026_IMONAS_MSK\data_results\';
+pout.path_in = '/mnt/data/data09/FinalizedStudies/2026_IMONAS_MSK/data_results/';
 
 % -- gateway
-pout.path_gateway = 'd:\Studies\2026_IMONAS_MSK\data_out\gateway\';
+pout.path_gateway = '/mnt/data/data09/FinalizedStudies/2026_IMONAS_MSK/data_out/gateway/';
 
 % -- group analysis
-pout.path_folder_g_100 = 'main_phase_dependency_group_100_IA100_22a_2023_05_19\';
-pout.path_folder_g_120 = 'main_phase_dependency_group_120_IA120_22a_2023_05_19\';
+pout.path_folder_g_100 = 'main_phase_dependency_group_100_IA100_22a_2023_05_19/';
+pout.path_folder_g_120 = 'main_phase_dependency_group_120_IA120_22a_2023_05_19/';
 % -- individual analysis
 
-pout.path_folder_i = {'main_phase_dependency_individual_100_IA100_22a_2023_05_19\';...
-    'main_phase_dependency_individual_120_IA120_22a_2023_05_20\';};
+pout.path_folder_i = {'main_phase_dependency_individual_100_IA100_22a_2023_05_19/';...
+    'main_phase_dependency_individual_120_IA120_22a_2023_05_20/';};
 
 % -- define output directory
-% pout.path_out = ['/mnt/data/data09/2026_IMONAS_MSK/data_out/ERP_', pout.pro_name, '/'];
-pout.path_out = ['d:\Studies\2026_IMONAS_MSK\data_results\', pout.function_name, '_', pout.pro_name, '_', nin_ctime, '\'];
+pout.path_out = ['/mnt/data/data09/FinalizedStudies/2026_IMONAS_MSK/data_results/', pout.function_name, '_', pout.pro_name, '_', nin_ctime, '/'];
 
 %% -- create data out folder
 

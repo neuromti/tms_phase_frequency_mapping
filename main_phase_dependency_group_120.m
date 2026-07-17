@@ -34,16 +34,16 @@ end
 %% -- define input parameters
 
 % -- define input directory
-pout.path_in = ['/mnt/data/data09/2026_IMONAS_MSK/data_out/ERP_', pout.pro_name, '/'];
+pout.path_in = ['/mnt/data/data09/FinalizedStudies/2026_IMONAS_MSK/data_out/ERP_', pout.pro_name, '/'];
 
 % -- define output directory
-pout.path_gateway = '/mnt/data/data09/2026_IMONAS_MSK/data_out/gateway/';
+pout.path_gateway = '/mnt/data/data09/FinalizedStudies/2026_IMONAS_MSK/data_out/gateway/';
 
 % -- define gateway directory
-pout.path_out = ['/mnt/data/data09/2026_IMONAS_MSK/data_results/', pout.function_name, '_', pout.pro_name, '_', nin_ctime, '/'];
+pout.path_out = ['/mnt/data/data09/FinalizedStudies/2026_IMONAS_MSK/data_results/', pout.function_name, '_', pout.pro_name, '_', nin_ctime, '/'];
 
 % -- define supplementary directory and filename
-pout.path_supplementary = '/mnt/data/data09/2026_IMONAS_MSK/Supplementary/';
+pout.path_supplementary = '/mnt/data/data09/FinalizedStudies/2026_IMONAS_MSK/Supplementary/';
 pout.TMS_file = ['acute_120_2_pdTEP_spreadsheet_', pout.pro_name, '.mat'];
 
 %% -- create data out folder

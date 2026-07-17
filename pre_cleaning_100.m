@@ -39,13 +39,13 @@ end
 %% -- define input parameters
 
 % -- define input directory
-pout.path_in = '/mnt/data/data09/2026_IMONAS_MSK/Raw_2021_10_08/';
+pout.path_in = '/mnt/data/data09/FinalizedStudies/2026_IMONAS_MSK/Raw_2021_10_08/';
 
 % -- define output directory
-pout.path_out = '/mnt/data/data09/2026_IMONAS_MSK/data_out/';
+pout.path_out = '/mnt/data/data09/FinalizedStudies/2026_IMONAS_MSK/data_out/';
 
 % -- define supplementary directory and file
-pout.path_supplementary = '/mnt/data/data09/2026_IMONAS_MSK/Supplementary/';
+pout.path_supplementary = '/mnt/data/data09/FinalizedStudies/2026_IMONAS_MSK/Supplementary/';
 pout.TMS_file = 'acute_100_pdTEP_spreadsheet.csv';
 
 %% -- create data out folder

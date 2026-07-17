@@ -28,10 +28,10 @@ end
 %% -- define input parameters
 
 % -- define input directory
-pout.path_in = ['/mnt/data/data09/2026_IMONAS_MSK/data_out/Epoched_', pout.pro_name, '/'];
+pout.path_in = ['/mnt/data/data09/FinalizedStudies/2026_IMONAS_MSK/data_out/Epoched_', pout.pro_name, '/'];
 
 % -- data output path
-pout.path_out = ['/mnt/data/data09/2026_IMONAS_MSK/data_out/ERP_', pout.pro_name, '/'];
+pout.path_out = ['/mnt/data/data09/FinalizedStudies/2026_IMONAS_MSK/data_out/ERP_', pout.pro_name, '/'];
 
 %% -- create data out folder
 
