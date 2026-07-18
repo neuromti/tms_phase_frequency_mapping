@@ -1,6 +1,6 @@
 % -------------------------------------------------------------------------
 %  Project: IMONAS 2020
-%  Task:    publication figures
+%  Task:    Publication figures
 % -------------------------------------------------------------------------
 
 % -- clear workspace, close all figures, and clear command window
@@ -31,7 +31,7 @@ else
 end
 
 %% -- define input parameters
-% d:\Studies\2026_IMONAS_MSK\
+
 % -- define input directory
 pout.path_in = '/mnt/data/data09/FinalizedStudies/2026_IMONAS_MSK/data_results/';
 
