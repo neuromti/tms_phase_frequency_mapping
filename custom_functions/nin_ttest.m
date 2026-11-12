@@ -1,6 +1,6 @@
 function [z] = nin_ttest(x, y, varargin)
 
-%% This function performs one-sample or paired t-tests
+%% Simple box plot with data distribution
 %
 % - input:
 % x: structure with input data
@@ -16,23 +16,24 @@ function [z] = nin_ttest(x, y, varargin)
 % srows: cell array of rows which will be plotted (default: all)
 % scolumns: cell array of columns which will be plotted (default: all)
 % dim: dimension of data matrix (default: 2)
+% dim: dimension of data matrix (default: 2)
 %
 % - example:
-% [y] = nin_ttest(R);
+% [y] = nin_anova(R);
+% [y] = nin_anova(R, 'dim', 1);
 
 % -- read input parameters
 nin_import_params(varargin);
 
-% -- initialize comparison dataset
 if nargin < 2
 
     y = [];
 
 end
 
-%% -- set default parameters
+%% -- set default values
 
-% -- define matching mode
+% -- type of matching
 if ~exist('match_case', 'var')
     match_case = 'exact';
 end
@@ -47,36 +48,40 @@ if ~exist('rn2', 'var')
     rn2 = 1;
 end
 
-% -- define lower border columns
+% -- define lower border rows
 if ~exist('cn1', 'var')
     cn1 = 2;
 end
 
-% -- define upper border columns
+% -- define upper border rows
 if ~exist('cn2', 'var')
     cn2 = 2;
 end
 
-% -- define delimiter
+% -- define spliter
 if ~exist('spliter', 'var')
     spliter = '_';
 end
 
-% -- convert row labels to strings
+if ~exist('tail', 'var')
+tail = 'both';
+end
+
+% -- make sure that values in rows are char
 if isnumeric(x(1).data_rows{1, 1})
     crows = cellfun(@num2str, x(1).data_rows, 'un', 0);
 else
     crows = x(1).data_rows;
 end
 
-% -- convert column labels to strings
+% -- make sure that values in columns are char
 if isnumeric(x(1).data_columns{1, 1})
     ccolumns = cellfun(@num2str, x(1).data_columns, 'un', 0);
 else
     ccolumns = x(1).data_columns;
 end
 
-% -- identify selected columns and rows
+% -- define which rows and colums will be ploted
 if ~exist('srowscolumns', 'var')
 
     % -- find selected data rows
@@ -87,12 +92,10 @@ if ~exist('srowscolumns', 'var')
         k = 1;
         while k <= length(ixr)
             switch match_case
-                % -- exact matching
                 case 'exact'
                     if any(strcmpi(srows, crows{k}))
                         ixr(k) = true;
                     end
-                    % -- partial matching
                 case 'partial'
                     ixr = contains(crows, srows);
             end
@@ -109,12 +112,10 @@ if ~exist('srowscolumns', 'var')
         k = 1;
         while k <= length(ixc)
             switch match_case
-                % -- exact matching
                 case 'exact'
                     if any(strcmpi(scolumns, ccolumns{k}))
                         ixc(k) = true;
                     end
-                    % -- partial matching
                 case 'partial'
                     ixc = contains(ccolumns, scolumns);
             end
@@ -131,12 +132,10 @@ else
     k = 1;
     while k <= length(ixr)
         switch match_case
-            % -- exact matching
             case 'exact'
                 if any(strcmpi(srows, crows{k}))
                     ixr(k) = true;
                 end
-                % -- partial matching
             case 'partial'
                 ixr = contains(crows, srows);
         end
@@ -149,12 +148,10 @@ else
     k = 1;
     while k <= length(ixc)
         switch match_case
-            % -- exact matching
             case 'exact'
                 if any(strcmpi(scolumns, ccolumns{k}))
                     ixc(k) = true;
                 end
-                % -- partial matching
             case 'partial'
                 ixc = contains(ccolumns, scolumns);
         end
@@ -164,30 +161,26 @@ else
 
 end
 
-% -- define testing dimension
+% -- define what is going to be plotted on subplots
 if ~exist('dim', 'var')
     dim = 2;
 end
 
-%% -- perform column-wise t-tests
-
 if dim == 2
 
+    % -- columns will be extracted
     k = 1;
     while k <= length(scolumns)
 
-        % -- extract selected data
+        % -- get rid of unwanted data
         sdata = nin_struct2cell_form(x, 'srows', srows, 'scolumns', scolumns{k}, 'otype', 'cell', 'smeta', []);
-
-        % -- convert cell data to numeric values
         sdata(2:end, :) = cellfun(@double, sdata(2:end, :), 'un', 0);
 
-        % -- extract labels
         header = nin_strsplit(sdata(1, :), 'first', [], 'spliter', '_');
         sdata = double(cell2mat(sdata(2:end, :)));
 
         if isempty(y)
-            % -- perform one-sample t-test
+
             [~, p, ci, stats] = ttest(sdata);
 
             n = size(x);
@@ -195,27 +188,25 @@ if dim == 2
             ix_y = [];
 
         else
-            % -- perform paired t-test
+
             sdata2 = nin_struct2cell_form(y, 'srows', srows, 'scolumns', scolumns{k}, 'otype', 'cell', 'smeta', []);
             sdata2(2:end, :) = cellfun(@double, sdata2(2:end, :), 'un', 0);
             sdata2 = double(cell2mat(sdata2(2:end, :)));
 
             % -- make sure that data are matched
             [sub, ix_x, ix_y] = intersect({x.sub}, {y.sub});
-
+           
             if length(sub) == 1
                 ix_x = strcmpi({x.sub}, sub{1, 1});
                 ix_y = strcmpi({y.sub}, sub{1, 1});
             end
             sdata = sdata(ix_x, :);
-            % -- extract comparison data
             sdata2 = sdata2(ix_y, :);
 
-            [~, p, ci, stats] = ttest(sdata, sdata2);
+            [~, p, ci, stats] = ttest(sdata, sdata2, 'Tail', tail);
 
         end
 
-        % -- store statistical results
         z(k).name = scolumns{k};
         z(k).p = p;
         z(k).ci = ci;
@@ -231,58 +222,18 @@ if dim == 2
 
 else
 
-    %% -- prepare row-wise analysis
-
+    % -- raw will be extracted
     k = 1;
     while k <= length(srows)
 
-        % -- extract selected data
+        h(k) = figure('color', [1 1 1], 'name', srows{k});
+
+        % -- get rid of unwanted data
         sdata = nin_struct2cell_form(x, 'srows', crows{k}, 'scolumns', scolumns, 'otype', 'cell', 'smeta', []);
-        % -- convert cell data to numeric values
         sdata(2:end, :) = cellfun(@double, sdata(2:end, :), 'un', 0);
 
-        % -- extract labels
         header = nin_strsplit(sdata(1, :), 'last', [], 'spliter', '_');
         sdata = double(cell2mat(sdata(2:end, :)));
-
-        if isempty(y)
-            % -- perform one-sample t-test
-            [~, p, ci, stats] = ttest(sdata);
-
-            n = size(x);
-            ix_x = true(max(n), 1);
-            ix_y = [];
-
-        else
-            % -- perform paired t-test
-            sdata2 = nin_struct2cell_form(y, 'srows', srows, 'scolumns', scolumns{k}, 'otype', 'cell', 'smeta', []);
-            sdata2(2:end, :) = cellfun(@double, sdata2(2:end, :), 'un', 0);
-            sdata2 = double(cell2mat(sdata2(2:end, :)));
-
-            % -- make sure that data are matched
-            [sub, ix_x, ix_y] = intersect({x.sub}, {y.sub});
-
-            if length(sub) == 1
-                ix_x = strcmpi({x.sub}, sub{1, 1});
-                ix_y = strcmpi({y.sub}, sub{1, 1});
-            end
-            sdata = sdata(ix_x, :);
-            % -- extract comparison data
-            sdata2 = sdata2(ix_y, :);
-
-            [~, p, ci, stats] = ttest(sdata, sdata2);
-
-        end
-
-        % -- store statistical results
-        z(k).name = scolumns{k};
-        z(k).p = p;
-        z(k).ci = ci;
-        z(k).t = stats.tstat;
-        z(k).df = stats.df;
-        z(k).sd = stats.sd;
-        z(k).x = x(ix_x);
-        z(k).y = y(ix_y);
 
         k = k + 1;
 
