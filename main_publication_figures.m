@@ -33,21 +33,25 @@ end
 %% -- define input parameters
 
 % -- define input directory
-pout.path_in = '/mnt/data/data09/FinalizedStudies/2026_IMONAS_MSK/data_results/';
+% pout.path_in = '/mnt/data/data09/FinalizedStudies/2026_IMONAS_MSK/data_results/';
+pout.path_in = 'd:\Studies\2026_IMONAS_MSK\data_results\';
 
 % -- gateway
-pout.path_gateway = '/mnt/data/data09/FinalizedStudies/2026_IMONAS_MSK/data_out/gateway/';
+% pout.path_gateway = '/mnt/data/data09/FinalizedStudies/2026_IMONAS_MSK/data_out/gateway/';
+pout.path_gateway = 'd:\Studies\2026_IMONAS_MSK\data_out\gateway\';
 
 % -- group analysis
 pout.path_folder_g_100 = 'main_phase_dependency_group_100_IA100_22a_2023_05_19/';
-pout.path_folder_g_120 = 'main_phase_dependency_group_120_IA120_22a_2023_05_19/';
+% pout.path_folder_g_120 = 'main_phase_dependency_group_120_IA120_22a_2023_05_19/';
+pout.path_folder_g_120 = 'main_phase_dependency_group_120_IA120_22a_2026_07_30/';
 % -- individual analysis
 
 pout.path_folder_i = {'main_phase_dependency_individual_100_IA100_22a_2023_05_19/';...
     'main_phase_dependency_individual_120_IA120_22a_2023_05_20/';};
 
 % -- define output directory
-pout.path_out = ['/mnt/data/data09/FinalizedStudies/2026_IMONAS_MSK/data_results/', pout.function_name, '_', pout.pro_name, '_', nin_ctime, '/'];
+% pout.path_out = ['/mnt/data/data09/FinalizedStudies/2026_IMONAS_MSK/data_results/', pout.function_name, '_', pout.pro_name, '_', nin_ctime, '/'];
+pout.path_out = ['d:\Studies\2026_IMONAS_MSK\data_results\', pout.function_name, '_', pout.pro_name, '_', nin_ctime, '/'];
 
 %% -- create data out folder
 
@@ -656,7 +660,7 @@ while k1 <= length(ufreq)
 end
 
 % -- extract permutation p-values
-if size(fit_amp, 1) == 2
+if size(fit_amp(1).p, 1) == 2
     fit_amp = nin_function(fit_amp_new, @(x) x(1, :)', {'p'}, {'p'});
 else
     fit_amp = nin_function(fit_amp, @(x) x(1, 1:2:end-1)', {'p'}, {'p'});
@@ -689,8 +693,8 @@ while k1 <= length(ufreq)
 end
 
 % -- extract permutation p-values and apply FDR correction
-if size(fit_amp, 1) == 2
-    fit_amp = nin_function(fit_amp_new, @(x) x(1, :)', {'p'}, {'p'});
+if size(fit_amp(1).p, 1) == 2
+    fit_amp = nin_function(fit_amp, @(x) x(1, :)', {'p'}, {'p'});
 else
     fit_amp = nin_function(fit_amp, @(x) x(1, 1:2:end-1)', {'p'}, {'p'});
 end
@@ -828,7 +832,7 @@ while kn <= length(pro_name)
             cdata = nin_subselect_dstruct(fitamp_tot, 'pro_name', pro_name{kn}, 'name', [npeaks{kp}, '_amp'], 'tfreq', ufreqc{kf});
             cdata_sur = cdata;
             cdata_sur = nin_function(cdata_sur, @(x) nanmean(x, 2), 'data_surogat', 'data');
-            ct = nin_ttest(cdata, cdata_sur, 'srows', {'amp'});
+            ct = nin_ttest(cdata, cdata_sur, 'srows', {'amp'}, 'tail', 'right');
 
             [ct.pro_name] = pro_name{kn};
             [ct.tfreq] = ufreqc{kf};
@@ -877,6 +881,7 @@ end
 % Save corrected p-values
 for k = 1:numel(stat_fdr)
     stat_fdr(k).p_fdr = p_new(k);
+    stat_fdr(k).p_new = p_new(k);
 end
 
 % -- calculate group-level modulation depth estimates
@@ -993,6 +998,12 @@ while kn <= length(pro_name)
         % -- highlight stimulation frequency range
         if kp == 1 && contains(pro_name(kn), '100')
             p(ka) = fill([[27, 27], [29, 29]], [[cylim(1), cylim(2)], fliplr([cylim(1), cylim(2)])], rgb('DarkRed'), 'FaceAlpha', alphafreqHighlight, 'linestyle','none');
+        end
+        ka = ka + 1;
+
+        % -- highlight secondary frequency range (N100)
+        if kp == 4 && contains(pro_name(kn), '100')
+            p(ka) = fill([[31, 31], [33, 33]], [[cylim(1), cylim(2)], fliplr([cylim(1), cylim(2)])], rgb('DarkRed'), 'FaceAlpha', alphafreqHighlight, 'linestyle','none');
         end
         ka = ka + 1;
 

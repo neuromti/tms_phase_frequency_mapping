@@ -549,7 +549,14 @@ for kf = 1:size(clu_tep_zsc, 2)
 end
 
 % -- average normalized data across subjects
-clu_tep = nin_group_data(clu_tep_zsc, {'data'}, {'tfreq', 'tphase'});
+clu_tep = nin_group_data(clu_tep_zsc, {'data'}, {'tfreq', 'tphase', 'sub'});
+[clu_tep.data_rows] = deal(clu_erp(1).data_rows);
+[clu_tep.data_columns] = deal(clu_erp(1).data_columns);
+clu_tep = nin_function(clu_tep, @(x) size(x, 1), {'data'}, {'N'});
+clu_tep = nin_function(clu_tep, @(x) sum(~isnan(x), 1), {'data'}, {'n'});
+clu_tep = nin_function(clu_tep, @(x) nanmean(x, 1), {'data'}, {'data'});
+
+clu_tep = nin_group_data(clu_tep, {'data'}, {'tfreq', 'tphase'});
 [clu_tep.data_rows] = deal(clu_erp(1).data_rows);
 [clu_tep.data_columns] = deal(clu_erp(1).data_columns);
 clu_tep = nin_function(clu_tep, @(x) size(x, 1), {'data'}, {'N'});
